@@ -1,39 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-950 text-gray-100">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Style Transfer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <title>Style Transfer</title>
 </head>
-<body class="flex flex-col h-screen">
+<body>
+    <h1>Style Transfer</h1>
 
-  <main class="flex-1 flex flex-col items-center justify-center px-4 space-y-4">
-    <h2 class="text-2xl font-semibold">Artistic Style Transfer</h2>
-    <form method="post" enctype="multipart/form-data"
-          class="w-full max-w-sm space-y-4">
-      <input type="file" name="content_image" accept="image/*" required
-             class="block w-full text-gray-700"/>
-      <input type="file" name="style_image" accept="image/*" required
-             class="block w-full text-gray-700"/>
-      <button type="submit"
-              class="w-full py-3 bg-blue-600 rounded text-white">
-        Apply Style
-      </button>
+    <form id="styleForm" method="POST" enctype="multipart/form-data">
+        <label>Content Image:</label>
+        <input type="file" name="content_image" required><br><br>
+        <label>Style Image:</label>
+        <input type="file" name="style_image" required><br><br>
+        <button type="submit">Apply Style</button>
     </form>
 
-    {% if result %}
-    <div class="mt-4">
-      <h3 class="font-medium mb-2">Hasil Stylized:</h3>
-      <img src="{{ url_for('static', filename=result) }}"
-           class="w-80 rounded border border-gray-700"/>
+    <h2>Hasil Style Transfer:</h2>
+    <div id="output">
+        {% if result %}
+            <img src="{{ url_for('static', filename=result) }}" width="300">
+        {% endif %}
     </div>
-    {% endif %}
-  </main>
-
-  <nav class="fixed bottom-0 left-0 right-0 bg-gray-900 text-gray-200 flex justify-around py-2">
-    <a href="{{ url_for('main') }}">🏠 Home</a>
-  </nav>
-
 </body>
 </html>

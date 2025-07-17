@@ -1,7 +1,8 @@
 import tensorflow as tf
-import tensorflow_hub as hub
 import numpy as np
 from PIL import Image
+import tensorflow_hub as hub
+import keras
 
 # 1. Load pre-trained style transfer model from TensorFlow Hub
 hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
@@ -12,7 +13,7 @@ def load_image(image_path, image_size=(256, 256)):
     img = img.resize(image_size)
     img = np.array(img) / 255.0  # normalize to [0,1]
     img = img[np.newaxis, ...]   # add batch dimension
-    return img.astype(np.float32)
+    return img.astype(np.float32) 
 
 # 3. Paths to your content and style images
 content_path = 'content.jpg'
@@ -28,9 +29,9 @@ stylized_image = hub_model(tf.constant(content_image), tf.constant(style_image))
 # 6. Save stylized output
 output_path = 'stylized_output.png'
 tf.keras.preprocessing.image.save_img(output_path, stylized_image[0])
-print(f"Stylized image saved to {output_path}")
 
 # 7. Wrap hub model in a Keras model to export
+@keras.saving.register_keras_serializable()
 class StyleTransferModel(tf.keras.Model):
     def __init__(self, hub_model):
         super().__init__()
